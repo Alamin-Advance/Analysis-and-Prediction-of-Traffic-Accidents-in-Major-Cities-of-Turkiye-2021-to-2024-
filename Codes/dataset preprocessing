@@ -24,3 +24,14 @@ try:
     new_file_path
 except FileNotFoundError:
     "File not found. Please check the file path and try again."
+import pandas as pd
+
+# Load the CSV file
+csv_path = '/content/drive/My Drive/Colab Notebooks/Data_analytics/data_table/Izmir_j_interp.csv'
+dataset = pd.read_csv(csv_path)
+
+# Calculate the shape
+rows, columns = dataset.shape
+
+# Display the shape
+print(f"Dataset shape: {rows} rows, {columns} columns")

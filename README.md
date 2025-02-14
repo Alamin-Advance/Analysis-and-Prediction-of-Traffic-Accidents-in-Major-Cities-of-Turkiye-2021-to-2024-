@@ -140,5 +140,4 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 - Special thanks to the open-source community for providing tools and libraries that made this project possible.
 
 ---
-
-Let me know if you need further customization or additional sections! 🚀
+ 🚀

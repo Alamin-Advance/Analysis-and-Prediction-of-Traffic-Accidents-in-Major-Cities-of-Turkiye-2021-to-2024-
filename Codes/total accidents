@@ -1,0 +1,44 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the dataset
+file_path = '/content/drive/My Drive/Colab Notebooks/Data_analytics/data_table/Konya_j_interp.csv'
+data = pd.read_csv(file_path)
+
+# Compute the total accidents column
+#data['Total_Accidents'] = data['Death_and_injury_accidents'] + data['Property_damage_accidents']
+# Compute the Total_Accidents column and insert it as the fifth column
+data.insert(4, 'Total_Accidents', data['Death_and_injury_accidents'] + data['Property_damage_accidents'])
+
+# Save the updated dataset
+result_file_path = '/content/drive/My Drive/Colab Notebooks/Data_analytics/results/table/Konya_j_total_acc.csv'
+data.to_csv(result_file_path, index=False)
+
+# Ensure 'Month' is categorical and ordered correctly
+data['Month'] = pd.Categorical(data['Month'], categories=[
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'], ordered=True)
+
+# Plot Total Accidents for each month and year
+plt.figure(figsize=(8, 6))
+sns.set_theme(style="whitegrid")
+
+# Use lineplot for graph style
+sns.lineplot(data=data, x='Month', y='Total_Accidents', hue='Year', marker='o', palette='tab10')
+
+# Customize the plot
+plt.title('Monthly Total Accidents in Konya (2021-2024)', fontsize=10)
+plt.xlabel('Month', fontsize=10)
+plt.ylabel('Total Accidents', fontsize=10)
+plt.xticks(rotation=45, fontsize=10)
+plt.yticks(fontsize=10)
+plt.legend(title='Year', fontsize=10, title_fontsize=10)
+plt.tight_layout()
+
+# Save and display the plot
+graph_file_path = '/content/drive/My Drive/Colab Notebooks/Data_analytics/results/Graphs/Konya/Konya_total_accidents.png'
+plt.savefig(graph_file_path)
+plt.show()
+
+result_file_path, graph_file_path

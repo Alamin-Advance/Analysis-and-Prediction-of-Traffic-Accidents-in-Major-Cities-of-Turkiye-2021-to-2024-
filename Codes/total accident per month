@@ -1,0 +1,55 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the dataset
+file_path = '/content/drive/My Drive/Colab Notebooks/Data_analytics/results/table/Konya_j_total_acc.csv'
+data = pd.read_csv(file_path)
+
+# Ensure that the 'Month' column is treated as a categorical variable with the correct order
+month_order = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+]
+data['Month'] = pd.Categorical(data['Month'], categories=month_order, ordered=True)
+
+# Aggregate total accidents by Year and Month
+monthly_total_accidents = data.groupby(['Year', 'Month'])['Total_Accidents'].sum().unstack()
+
+# Create pie charts for each year
+for year in monthly_total_accidents.index:
+    plt.figure(figsize=(6, 6))
+    month_data = monthly_total_accidents.loc[year]
+
+    # Plot the pie chart for the given year with better label positioning
+    wedges, texts, autotexts = plt.pie(
+        month_data,
+        autopct=lambda p: f'{p * month_data.sum() / 100:.0f}',
+        startangle=140,
+        colors=sns.color_palette("Set3", len(month_data)),
+        wedgeprops={'edgecolor': 'black'},
+        pctdistance=0.85  # Moves the percentage text slightly inside the pie
+    )
+
+    # Adjust label positions to avoid overlap
+    for text in texts:
+        text.set(fontsize=10, ha='center', va='center')
+    for autotext in autotexts:
+        autotext.set(fontsize=10, ha='center', va='center')
+
+    # Set title for the pie chart
+    plt.title(f'Total Accidents Distribution by Month in Konya ({year})', fontsize=10)
+    plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+
+    # Create legend with the corresponding month names
+    plt.legend(wedges, month_data.index, title="Months", loc="center left", bbox_to_anchor=(1, 0, 0.5, 1))
+
+    # Adjust layout to prevent overlapping of elements
+    plt.tight_layout()
+
+    # Save the pie chart for each year
+    pie_chart_file_path = f'/content/drive/My Drive/Colab Notebooks/Data_analytics/results/Graphs/Konya/Konya_total_accidents_pie_chart_{year}.png'
+    plt.savefig(pie_chart_file_path)
+    plt.show()
+
+pie_chart_file_path
